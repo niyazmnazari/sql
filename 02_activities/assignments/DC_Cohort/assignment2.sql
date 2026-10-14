@@ -60,7 +60,7 @@ SELECT * FROM (
   DENSE_RANK() OVER (PARTITION BY customer_id ORDER BY market_date DESC) AS visit_number
   FROM customer_purchases
 ) x
-;
+WHERE visit_number = 1;
 
 --END QUERY
 
@@ -105,7 +105,7 @@ FROM product;
 /* 2. Filter the query to show any product_size value that contain a number with REGEXP. */
 --QUERY 6
 
-SELEC product_size FROM product WHERE product_size REGEXP '[0-9]';
+SELECT product_size FROM product WHERE product_size REGEXP '[0-9]';
 
 --END QUERY
 
@@ -152,7 +152,7 @@ How many customers are there (y).
 Before your final group by you should have the product of those two queries (x*y).  */
 --QUERY 8
 
-SELECT vendor_name, product_name, SUM(original_price) AS possible_revenue
+SELECT vendor_name, product_name, SUM(5 * original_price) AS possible_revenue
 FROM (
   SELECT DISTINCT v.vendor_name, p.product_name, vi.original_price
   FROM vendor_inventory vi
@@ -183,7 +183,8 @@ FROM product WHERE product_qty_type = 'unit';
 This can be any product you desire (e.g. add another record for Apple Pie). */
 --QUERY 10
 
-
+INSERT INTO product_units
+SELECT *, CURRENT_TIMESTAMP FROM product WHERE product_id = 7;
 
 --END QUERY
 
